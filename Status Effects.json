@@ -1,0 +1,14 @@
+{
+    "id": "GSStatusEffects",
+    "name": "Status Effects",
+    "author": ["GhostSalt"],
+    "description": "Adds various status effects! Very WIP atm.",
+    "prefix": "stateff",
+    "main_file": "main.lua",
+    "badge_colour": "a2351c",
+    "dependencies": [
+        "Steamodded (>=1.0.0~BETA-1620a)"
+    ],
+    "version": "1.0.0~ALPHA",
+    "priority": 0
+}
