@@ -8,73 +8,60 @@ SMODS.Atlas {
 SMODS.Atlas {
     key = "Burnt",
     path = "StatusEffectsBurnt.png",
-    px = 17,
-    py = 17
+    px = 71,
+    py = 95
 }
 
 -- Thanks, YMA from Cold Beans!
-function stateff_change_blind_requirement(mod_add)
+function stateff_change_blind_requirement(mod_add, pitch_base, pitch_direction)
     if not G.GAME.blind.original_chips then G.GAME.blind.original_chips = G.GAME.blind.chips end
     local original_chips = G.GAME.blind.original_chips > 0 and G.GAME.blind.original_chips or G.GAME.blind.chips
+    -- This is the value we should base our calculations on
+    -- If we just use G.GAME.blind.chips and click during an animation is uses that value instead
+    local working_chips = (G.GAME.blind.burn_chips or G.GAME.blind.chips)
     mod_add = mod_add or 0
-    mod_add = -math.ceil(G.GAME.blind.chips * mod_add / 100)
+    mod_add = -math.ceil(working_chips * mod_add / 100)
+    pitch_base = pitch_base or 0.8
+    pitch_direction = pitch_direction or 0.005
 
-    local current_mult = G.GAME.blind.chips / (original_chips / G.GAME.blind.mult)
+    local current_mult = working_chips / (original_chips / G.GAME.blind.mult)
     local final_chips = (original_chips / G.GAME.blind.mult) * (current_mult) + mod_add
     local chip_mod
-    if type(G.GAME.blind.chips) ~= "table" then
-        chip_mod = math.ceil(math.abs(final_chips - G.GAME.blind.chips) / 120)
+    if type(working_chips) ~= "table" then
+        chip_mod = math.ceil(math.abs(final_chips - working_chips) / 120)
     else
-        chip_mod = ((final_chips - G.GAME.blind.chips):abs() / 120):ceil()
+        chip_mod = ((final_chips - working_chips):abs() / 120):ceil()
     end
     local step = 0
-    if G.GAME.blind.chips < final_chips then
-        G.E_MANAGER:add_event(Event({
-            trigger = "after",
-            blockable = false,
-            blocking = true,
-            func = function()
-                G.GAME.blind.chips = G.GAME.blind.chips + G.SETTINGS.GAMESPEED * chip_mod
-                if G.GAME.blind.chips < final_chips then
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    if step % 5 == 0 then
-                        play_sound("chips1", 0.8 + (step * 0.005))
-                    end
-                    step = step + 1
-                else
-                    G.GAME.blind.chips = final_chips
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    G.GAME.blind:wiggle()
-                    return true
+    G.GAME.blind.burn_chips = final_chips
+
+    local mod_direction = (mod_add < 0) and -1 or 1
+
+    G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        blockable = false,
+        blocking = true,
+        func = function()
+            G.GAME.blind.chips = G.GAME.blind.chips + G.SETTINGS.GAMESPEED * chip_mod * mod_direction
+            if G.GAME.blind.chips * mod_direction < final_chips * mod_direction then
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                if step % 5 == 0 then
+                    play_sound("chips1", pitch_base + (step * pitch_direction))
                 end
+                step = step + 1
+            else
+                G.GAME.blind.chips = final_chips
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                if G.GAME.blind.burn_chips == final_chips then G.GAME.blind.burn_chips = nil end
+                G.GAME.blind:wiggle()
+                return true
             end
-        }))
-    else
-        G.E_MANAGER:add_event(Event({
-            trigger = "after",
-            blockable = false,
-            blocking = true,
-            func = function()
-                G.GAME.blind.chips = G.GAME.blind.chips - G.SETTINGS.GAMESPEED * chip_mod
-                if G.GAME.blind.chips > final_chips then
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    if step % 5 == 0 then
-                        play_sound("chips1", 0.8 + (step * 0.005))
-                    end
-                    step = step - 1
-                else
-                    G.GAME.blind.chips = final_chips
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    G.GAME.blind:wiggle()
-                    return true
-                end
-            end
-        }))
-    end
+        end
+    }))
 end
 
-local function stateff_get_current_burn_pos()
-    return { x = math.floor(os.time() * 3) % 3, y = 0 }
+local function stateff_get_current_burn_pos( card )
+    return { x = math.floor(os.clock() * 5, ((card or {}).sort_id or 0) / 10) % 3, y = 0 }
 end
 
 local click_ref = Card.click
@@ -82,7 +69,7 @@ function Card:click()
     local ret = click_ref(self)
     if self.ability and self.ability.stateff_burnt then
         self.ability.stateff_burnt = nil
-        stateff_change_blind_requirement(-50)
+        stateff_change_blind_requirement(-50, 0.4, -0.005)
     end
     return ret
 end
@@ -91,16 +78,14 @@ SMODS.DrawStep {
     key = "burnt",
     order = 22,
     func = function(self, layer)
-        if not self.stateff_burnt and self.ability and self.ability.stateff_burnt then
-            local atlas = G.ASSET_ATLAS["stateff_Burnt"]
-            self.stateff_burnt = Sprite(0, 0, atlas.px, atlas.py, atlas, stateff_get_current_burn_pos())
-        end
-        if self.stateff_burnt then
-            self.stateff_burnt:set_sprite_pos(stateff_get_current_burn_pos())
-            self.stateff_burnt.role.draw_major = self
-            if not self.greyed then
-                self.stateff_burnt:draw_shader("dissolve", nil, nil, nil, self.children.center)
+        if self.ability.stateff_burnt then
+            if not StatusEffects.shared_stateff_burnt then
+                local atlas = G.ASSET_ATLAS["stateff_Burnt"]
+                StatusEffects.shared_stateff_burnt = Sprite(0, 0, atlas.px, atlas.py, atlas, { x = 0, y = 0 })
             end
+            StatusEffects.shared_stateff_burnt.role.draw_major = self
+            StatusEffects.shared_stateff_burnt:set_sprite_pos(stateff_get_current_burn_pos())
+            StatusEffects.shared_stateff_burnt:draw_shader("dissolve", nil, nil, nil, self.children.center)
         end
     end,
     conditions = { vortex = false }
@@ -129,6 +114,14 @@ StatusEffects.define_effect {
                     end
                 }))
             end
+            G.E_MANAGER:add_event(Event({
+                trigger = "before",
+                delay = 0.2,
+                func = function()
+                    save_run()
+                    return true
+                end
+            }))
         end
     end
 }
