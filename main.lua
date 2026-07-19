@@ -11,7 +11,7 @@ to_number = to_number or function(x) return x end
 if not StatusEffects then StatusEffects = {} end
 
 local allFolders = { "none", "items" }
-local allFiles = { ["none"] = {}, ["items"] = { "ObjectDefs", "StatusEffects", "Blinds" } }
+local allFiles = { ["none"] = {}, ["items"] = { "Sounds", "ObjectDefs", "StatusEffects", "Blinds", "Potions" } }
 
 for i = 1, #allFolders do
   if allFolders[i] == "none" then

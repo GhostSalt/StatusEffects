@@ -47,7 +47,7 @@ StatusEffects.change_effect_level = function(key, level)
         if (effect.level or 0) <= -level then return StatusEffects.clear_effect(key) end
         effect.level = (effect.level or 0) + level
         if level > 0 and StatusEffects.ALL_EFFECTS[key].apply_effect then
-            StatusEffects.ALL_EFFECTS[key]:apply_effect(effect)
+            StatusEffects.ALL_EFFECTS[key]:apply_effect(effect, level)
         elseif level < 0 and StatusEffects.ALL_EFFECTS[key].remove_effect then
             StatusEffects.ALL_EFFECTS[key]:remove_effect(effect, -level)
         end
@@ -58,7 +58,7 @@ StatusEffects.change_effect_level = function(key, level)
         G.GAME.APPLIED_EFFECTS[key].level = level
         G.GAME.APPLIED_EFFECTS[key]._order = G.GAME.NEXT_EFFECT_ORDER or 1
         G.GAME.NEXT_EFFECT_ORDER = (G.GAME.NEXT_EFFECT_ORDER or 1) + 1
-        if StatusEffects.ALL_EFFECTS[key].apply_effect then StatusEffects.ALL_EFFECTS[key]:apply_effect(G.GAME.APPLIED_EFFECTS[key]) end
+        if StatusEffects.ALL_EFFECTS[key].apply_effect then StatusEffects.ALL_EFFECTS[key]:apply_effect(G.GAME.APPLIED_EFFECTS[key], level) end
         stateff_update_box()
     end
 end
@@ -66,14 +66,38 @@ end
 StatusEffects.clear_effect = function(key)
     if not G.GAME or not G.GAME.APPLIED_EFFECTS then return end
     if G.GAME.APPLIED_EFFECTS[key] then
+        local level = G.GAME.APPLIED_EFFECTS[key].level
         G.GAME.APPLIED_EFFECTS[key].level = 0
-        if StatusEffects.ALL_EFFECTS[key].remove_effect then StatusEffects.ALL_EFFECTS[key]:remove_effect(G.GAME.APPLIED_EFFECTS[key], G.GAME.APPLIED_EFFECTS[key].level) end
+        if StatusEffects.ALL_EFFECTS[key].remove_effect then StatusEffects.ALL_EFFECTS[key]:remove_effect(G.GAME.APPLIED_EFFECTS[key], level) end
         G.GAME.APPLIED_EFFECTS[key] = nil
         stateff_update_box()
     end
 end
 
+StatusEffects.clear_all_effects = function()
+    if not G.GAME or not G.GAME.APPLIED_EFFECTS then return end
+    for k, v in pairs(G.GAME.APPLIED_EFFECTS) do
+        StatusEffects.clear_effect(k)
+    end
+end
+
+StatusEffects.get_effect = function(key)
+    if not G.GAME or not G.GAME.APPLIED_EFFECTS then return 0 end
+    if not G.GAME.APPLIED_EFFECTS[key] then return 0 end
+    return G.GAME.APPLIED_EFFECTS[key].level or 0
+end
+
 function SMODS.current_mod:calculate(context)
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then --Status Effects woz here
+        if G.STATE == G.STATES.SELECTING_HAND and G.STATE_COMPLETE then
+            stop_use()
+            G.STATE = G.STATES.NEW_ROUND
+            end_round()
+        end
+    end
+
+
+
     local ret = nil
     if G.GAME and G.GAME.APPLIED_EFFECTS then
         local flags = {}
@@ -112,7 +136,8 @@ local function stateff_create_uibox()
         local k = vv.k; local v = vv.v
         local eff = StatusEffects.ALL_EFFECTS[k]
         local key = "stateff_" .. eff.key
-        local info = { set = "Other", key = key, specific_vars = (eff.loc_vars and eff:loc_vars(v) or {}) }
+        local info_queue = {}
+        local info = { set = "Other", key = key, specific_vars = (eff.loc_vars and eff:loc_vars(info_queue, v) or {}) }
 
         local atlas_key = eff.atlas
         if not eff.no_prefix then atlas_key = eff.mod_prefix .. atlas_key end

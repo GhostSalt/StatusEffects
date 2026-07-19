@@ -8,6 +8,27 @@ SMODS.Atlas {
 }
 
 SMODS.Blind {
+    key = "rise",
+    atlas = "Blinds",
+    pos = { x = 0, y = 7 },
+    boss = { min = 3 },
+    config = { no_of_effect = 3 },
+    boss_colour = HEX("A64A44"),
+    collection_loc_vars = function(self)
+        return { vars = { self.config.no_of_effect } }
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.no_of_effect } }
+    end,
+    set_blind = function(self)
+        StatusEffects.change_effect_level("stateff_burnt", G.GAME.blind.effect.no_of_effect)
+    end,
+    disable = function(self)
+        StatusEffects.change_effect_level("stateff_burnt", -G.GAME.blind.effect.no_of_effect)
+    end
+}
+
+SMODS.Blind {
     key = "icicle",
     atlas = "Blinds",
     pos = { x = 0, y = 0 },
@@ -151,5 +172,26 @@ SMODS.Blind {
     end,
     disable = function(self)
         StatusEffects.change_effect_level("stateff_unlucky", -G.GAME.blind.effect.no_of_effect)
+    end
+}
+
+SMODS.Blind {
+    key = "harpy",
+    atlas = "Blinds",
+    pos = { x = 0, y = 8 },
+    boss = { min = 3 },
+    config = { no_of_effect = 4 },
+    boss_colour = HEX("857CDD"),
+    collection_loc_vars = function(self)
+        return { vars = { self.config.no_of_effect } }
+    end,
+    loc_vars = function(self)
+        return { vars = { self.config.no_of_effect } }
+    end,
+    set_blind = function(self)
+        StatusEffects.change_effect_level("stateff_lunatic", G.GAME.blind.effect.no_of_effect)
+    end,
+    disable = function(self)
+        StatusEffects.change_effect_level("stateff_lunatic", -G.GAME.blind.effect.no_of_effect)
     end
 }

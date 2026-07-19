@@ -48,6 +48,96 @@ return {
                 text = {
                     "Inflicts #1# Unlucky"
                 }
+            },
+            bl_stateff_harpy = {
+                name = "The Harpy",
+                text = {
+                    "Inflicts #1# Lunatic"
+                }
+            }
+        },
+        stateff_Potion = {
+            c_stateff_unicorntears = {
+                name = "Unicorn Tears",
+                text = {
+                    "{C:green}+#1#{} Lucky,",
+                    "{C:red}+#2#{} Shocked"
+                }
+            },
+            c_stateff_dubiousvino = {
+                name = "Dubious Vino",
+                text = {
+                    "{C:green}+#1#{} Focused,",
+                    "{C:red}+#2#{} Poisoned"
+                }
+            },
+            c_stateff_lattemaltocaldo = {
+                name = "Latte Malto Caldo",
+                text = {
+                    "{C:green}+#1#{} Swift,",
+                    "{C:red}+#2#{} Burnt"
+                }
+            },
+            c_stateff_homeopathiclemonade = {
+                name = "Homeopathic Lemonade",
+                text = {
+                    "{C:green}+#1#{} Clairvoyant,",
+                    "{C:red}+#2#{} Weakened"
+                }
+            },
+            c_stateff_orcbrew = {
+                name = "Orc Brew",
+                text = {
+                    "{C:green}+#1#{} Furious,",
+                    "{C:red}+#2#{} Blinded"
+                }
+            },
+            c_stateff_saltyspirit = {
+                name = "Salty Spirit",
+                text = {
+                    "{C:green}+#1#{} Invisible,",
+                    "{C:red}+#2#{} Cursed"
+                }
+            },
+            c_stateff_radioactivesludge = {
+                name = "Radioactive Sludge",
+                text = {
+                    "{C:green}+#1#{} Glowing,",
+                    "{C:red}+#2#{} Unlucky"
+                }
+            },
+            c_stateff_schradersmedicine = {
+                name = "Schrader's Medicine",
+                text = {
+                    "{C:green}+#1#{} Guarded,",
+                    "{C:red}+#2#{} Frozen"
+                }
+            },
+            c_stateff_bafflingcocktail = {
+                name = "Baffling Cocktail",
+                text = {
+                    "{C:green}+#1#{} Arcane,",
+                    "{C:red}+#2#{} Lunatic"
+                }
+            },
+            c_stateff_witchscanteen = {
+                name = "Witch's Canteen",
+                text = {
+                    "{C:green}+#1#{} Mana"
+                }
+            },
+            c_stateff_plainmilk = {
+                name = "Plain Milk",
+                text = {
+                    "Clears all",
+                    "{C:attention}status effects{}"
+                }
+            },
+            c_stateff_miraclenectar = {
+                name = "Miracle Nectar",
+                text = {
+                    "{C:green}+#1#{} Divine"
+                }
             }
         },
         Other = {
@@ -55,7 +145,7 @@ return {
                 name = "Burnt",
                 text = {
                     "Leftmost {C:attention}#1#{} cards become",
-                    "{C:attention}Burnt{} when first hand",
+                    "{C:attention}Burning{} when first hand",
                     "of round is drawn"
                 }
             },
@@ -119,6 +209,34 @@ return {
                     "{C:attention}+#1#{} hand size"
                 }
             },
+            stateff_stateff_swift = {
+                name = "Swift",
+                text = {
+                    "{C:blue}+#1#{} hand#2#"
+                }
+            },
+            stateff_stateff_furious = {
+                name = "Furious",
+                text = {
+                    "Retriggers all played",
+                    "cards {C:attention}#1#{} time#2#"
+                }
+            },
+            stateff_stateff_invisible = {
+                name = "Invisible",
+                text = {
+                    "The next {C:attention}#1#{} round#2#",
+                    "only end#3# once you",
+                    "use all your {C:blue}hands{}"
+                }
+            },
+            stateff_stateff_clairvoyant = {
+                name = "Clairvoyant",
+                text = {
+                    "{C:attention}+#1#{} card#2# in",
+                    "the shop"
+                }
+            },
             stateff_stateff_weakened = {
                 name = "Weakened",
                 text = {
@@ -126,11 +244,88 @@ return {
                     "are {C:attention}-#1#{} level#2#",
                     "{C:inactive}(Minimum level 1){}"
                 }
-            }
+            },
+            stateff_stateff_glowing = {
+                name = "Glowing",
+                text = {
+                    "Rightmost {C:attention}#1#{} cards become",
+                    "{C:attention}Shining{} when first hand",
+                    "of round is drawn"
+                }
+            },
+            stateff_stateff_guarded = {
+                name = "Guarded",
+                text = {
+                    "For the next {C:attention}#1#{} round#2#,",
+                    "if chips scored are at",
+                    "least {C:attention}25%{} of required",
+                    "chips, prevents Death",
+                    "and lose all {C:attention}Guarded{}"
+                }
+            },
+            stateff_stateff_arcane = {
+                name = "Arcane",
+                text = {
+                    "Creates a {C:tarot}Tarot{} card",
+                    "after the next",
+                    "{C:attention}#1#{} hand#2# played",
+                    "{C:inactive}(Must have room){}"
+                }
+            },
+            stateff_stateff_lunatic = {
+                name = "Lunatic",
+                text = {
+                    "For the next {C:attention}#1#{}",
+                    "rounds, you {C:red}cannot{}",
+                    "sell {C:attention}consumables{}"
+                }
+            },
+            stateff_stateff_mana = {
+                name = "Mana",
+                text = {
+                    "Grants {C:attention}bonus powers{}",
+                    "for certain cards,",
+                    "does not {C:red}deplete{} at",
+                    "the end of the round"
+                }
+            },
+            stateff_stateff_divine = {
+                name = "Divine",
+                text = {
+                    "{C:attention}+#1#{} Joker slot#2#"
+                }
+            },
+            stateff_burnt_info = {
+                name = "Burning Card",
+                text = {
+                    "When selected,",
+                    "{C:white,X:attention}X1.5{} Blind size",
+                    "and stops burning"
+                }
+            },
+            stateff_shining_info = {
+                name = "Shining Card",
+                text = {
+                    "Earn {C:money}$4{}"
+                }
+            },
+
+            undiscovered_stateff_potion = {
+                name = "Not Discovered",
+                text = {
+                    "Obtain this potion in",
+                    "an unseeded run to",
+                    "learn what it does",
+                }
+            },
         }
     },
     misc = {
         dictionary = {
+            b_stateff_potion_cards = "Potions",
+            k_stateff_potion = "Potion",
+            ph_stateff_guarded = "Saved by Guarded",
+
             stateff_plural = "s"
         }
     }

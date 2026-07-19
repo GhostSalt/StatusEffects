@@ -1,0 +1,69 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+match_indent = true
+pattern = '''for _, v in ipairs(info_queue) do'''
+position = 'before'
+payload = '''
+if card and card.ability and card.ability.stateff_burnt and card.area == G.hand then info_queue[#info_queue+1] = { key = "stateff_burnt_info", set = "Other" } end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+match_indent = true
+pattern = '''for _, v in ipairs(info_queue) do'''
+position = 'before'
+payload = '''
+if card and card.ability and card.ability.stateff_shining and card.area == G.hand then info_queue[#info_queue+1] = { key = "stateff_shining_info", set = "Other" } end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+pattern = '''if not dont_dissolve then card:start_dissolve() end'''
+position = 'before'
+payload = '''if not (card.config.center.set == "stateff_Potion" and not card.config.center.stateff_dont_shatter) then '''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+pattern = '''if not dont_dissolve then card:start_dissolve() end'''
+position = 'after'
+payload = ''' else card:shatter() end'''
+
+
+
+
+
+
+[[patches]]
+[patches.regex]
+target = "game.lua"
+pattern = '''(G.GAME\.chips - G.GAME\.blind\.chips >= 0|Big:new\(G\.GAME\.chips\) >= Big:new\(G\.GAME\.blind\.chips\)|to_big\(G\.GAME\.chips\) >= to_big\(G\.GAME\.blind\.chips\))'''
+position = "at"
+payload = '''($1 and StatusEffects.get_effect("stateff_invisible") == 0)'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
+        end_round()'''
+position = "at"
+payload = '''
+if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then --Status Effects woz here
+    if G.STATE ~= G.STATES.NEW_ROUND and not G.STATE_COMPLETE then
+        G.STATE_COMPLETE = true
+		stop_use()
+		G.STATE = G.STATES.NEW_ROUND
+		end_round()
+	end'''
+match_indent = true
