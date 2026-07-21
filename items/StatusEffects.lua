@@ -136,8 +136,8 @@ StatusEffects.define_effect {
         info_queue[#info_queue + 1] = { key = "stateff_burnt_info", set = "Other" }
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_burnt_apply", 1, 0.5)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_burnt_apply", 1, 0.5) end
     end,
     calculate = function(self, config, context)
         if context.first_hand_drawn then
@@ -169,7 +169,8 @@ StatusEffects.define_effect {
                 end
             }))
         end
-
+    end,
+    calculate_always = function(self, context)
         if context.end_of_round and not context.individual and not context.repetition then
             if G.playing_cards then
                 for _, card in pairs(G.playing_cards) do
@@ -191,14 +192,14 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_frozen_apply", 1, 0.6)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_frozen_apply", 1, 0.8) end
         local change = math.min(added, G.GAME.current_round.discards_left)
         config.removed = (config.removed or 0) + change
         G.GAME.round_resets.discards = G.GAME.round_resets.discards - change
         ease_discard(-change)
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         local delta = config.removed
         local change = math.min(config.level, G.GAME.current_round.discards_left + config.removed)
         delta = delta - change
@@ -217,8 +218,17 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level * config.money_per_level }
     end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_shocked_apply", 1, 0.6) end
+    end,
     calculate = function(self, config, context)
         if context.pre_discard then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound("stateff_shocked_on", 1, 0.6)
+                    return true
+                end
+            }))
             return { dollars = -config.level * config.money_per_level }
         end
     end
@@ -231,6 +241,9 @@ StatusEffects.define_effect {
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level }
+    end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_blinded_apply", 1, 0.5) end
     end,
     calculate = function(self, config, context)
         if context.stay_flipped and context.to_area == G.hand then
@@ -253,10 +266,14 @@ StatusEffects.define_effect {
         local num, denom = SMODS.get_probability_vars(self, config.num, config.denom, "stateff_cursed")
         return { num, denom }
     end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_cursed_apply", 1, 0.45) end
+    end,
     calculate = function(self, config, context)
         if context.debuff_hand and not context.check and G.GAME.current_round.hands_left > 0 and SMODS.pseudorandom_probability(self, "stateff_cursed", config.num, config.denom) then
             G.E_MANAGER:add_event(Event({
                 func = function()
+                    play_sound("stateff_cursed_on", 1, 0.35)
                     StatusEffects.change_effect_level("stateff_cursed", -1)
                     return true
                 end
@@ -274,8 +291,17 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_poisoned_apply", 1, 0.5) end
+    end,
     calculate = function(self, config, context)
         if context.end_of_round and not context.individual and not context.repetition then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound("stateff_poisoned_on", 1, 0.5)
+                    return true
+                end
+            }))
             return { dollars = -config.level }
         end
     end
@@ -288,6 +314,9 @@ StatusEffects.define_effect {
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 1 }
+    end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_lucky_apply", 1, 0.4) end
     end,
     calculate = function(self, config, context)
         if context.mod_probability and not context.blueprint then
@@ -304,6 +333,9 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 3 }
     end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_unlucky_apply", 1, 0.45) end
+    end,
     calculate = function(self, config, context)
         if context.mod_probability and not context.blueprint then
             return { denominator = context.denominator + config.level }
@@ -319,10 +351,11 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
-    apply_effect = function(self, config, added)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_focused_apply", 1, 0.4) end
         G.hand:change_size(added)
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         G.hand:change_size(-removal)
     end
 }
@@ -335,10 +368,11 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_clairvoyant_apply", 1, 0.4) end
         change_shop_size(added)
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         change_shop_size(-removal)
     end
 }
@@ -367,7 +401,8 @@ StatusEffects.define_effect {
             stateff_ignore_these_upgrades_please = nil
         end
     end,
-    apply_effect = function(self, config, added)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_weakened_apply", 1, 0.3) end
         stateff_ignore_these_upgrades_please = true
         if config.affected_hands then
             for k, v in pairs(config.affected_hands) do
@@ -384,7 +419,7 @@ StatusEffects.define_effect {
         end
         stateff_ignore_these_upgrades_please = nil
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         stateff_ignore_these_upgrades_please = true
         if config.affected_hands then
             for k, v in pairs(config.affected_hands) do
@@ -411,12 +446,12 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_swift_apply", 1, 0.5)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_swift_apply", 1, 0.5) end
         G.GAME.round_resets.hands = G.GAME.round_resets.hands + added
         ease_hands_played(added)
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         G.GAME.round_resets.hands = G.GAME.round_resets.hands - removal
         ease_hands_played(-removal)
     end
@@ -430,6 +465,9 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_furious_apply", 1, 0.4) end
+    end,
     calculate = function(self, config, context)
         if context.cardarea == G.play and context.repetition then
             return { repetitions = config.level }
@@ -442,6 +480,9 @@ StatusEffects.define_effect {
     pos = { x = 3, y = 3 },
     colour = HEX("927E5C"),
     decrease_at_eor = 1,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_invisible_apply", 1, 0.6) end
+    end,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural"), config.level ~= 1 and "" or localize("stateff_plural") }
     end
@@ -456,14 +497,14 @@ StatusEffects.define_effect {
         info_queue[#info_queue + 1] = { key = "stateff_shining_info", set = "Other" }
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        --play_sound("stateff_burnt_apply", 1, 0.5)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_glowing_apply", 1, 0.5) end
     end,
     calculate = function(self, config, context)
         if context.first_hand_drawn then
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    --play_sound("stateff_burnt_on", 1, 0.8)
+                    play_sound("stateff_glowing_on", 1, 0.7)
                     return true
                 end
             }))
@@ -489,7 +530,8 @@ StatusEffects.define_effect {
                 end
             }))
         end
-
+    end,
+    calculate_always = function(self, context)
         if context.end_of_round and not context.individual and not context.repetition then
             if G.playing_cards then
                 for _, card in pairs(G.playing_cards) do
@@ -514,8 +556,8 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_guarded_apply", 1, 0.7)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_guarded_apply", 1, 0.7) end
     end,
     calculate = function(self, config, context)
         if context.end_of_round and context.game_over and context.main_eval and not context.blueprint then
@@ -545,6 +587,9 @@ StatusEffects.define_effect {
     colour = HEX("8A71E1"),
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
+    end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_arcane_apply", 1, 0.5) end
     end,
     calculate = function(self, config, context)
         if context.after then
@@ -579,6 +624,9 @@ StatusEffects.define_effect {
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
+    end,
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_lunatic_apply", 1, 0.5) end
     end
 }
 
@@ -597,8 +645,8 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_mana_apply", 1, 0.6)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_mana_apply", 1, 0.6) end
     end
 }
 
@@ -610,11 +658,11 @@ StatusEffects.define_effect {
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
-    apply_effect = function(self, config, added)
-        play_sound("stateff_divine_apply", 1, 0.7)
+    apply_effect = function(self, config, added, args)
+        if not (args and args.silent) then play_sound("stateff_divine_apply", 1, 0.7) end
         G.jokers.config.card_limit = G.jokers.config.card_limit + added
     end,
-    remove_effect = function(self, config, removal)
+    remove_effect = function(self, config, removal, args)
         G.jokers.config.card_limit = G.jokers.config.card_limit - removal
     end
 }

@@ -23,6 +23,70 @@ SMODS.Sound({
 
 
 SMODS.Sound({
+  key = "shocked_apply",
+  path = "stateff_shocked_apply.ogg"
+})
+
+SMODS.Sound({
+  key = "shocked_on",
+  path = "stateff_shocked_on.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "weakened_apply",
+  path = "stateff_weakened_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "blinded_apply",
+  path = "stateff_blinded_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "cursed_apply",
+  path = "stateff_cursed_apply.ogg"
+})
+
+SMODS.Sound({
+  key = "cursed_on",
+  path = "stateff_cursed_on.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "poisoned_apply",
+  path = "stateff_poisoned_apply.ogg"
+})
+
+SMODS.Sound({
+  key = "poisoned_on",
+  path = "stateff_poisoned_on.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "focused_apply",
+  path = "stateff_focused_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "clairvoyant_apply",
+  path = "stateff_clairvoyant_apply.ogg"
+})
+
+
+
+SMODS.Sound({
   key = "swift_apply",
   path = "stateff_swift_apply.ogg"
 })
@@ -30,8 +94,62 @@ SMODS.Sound({
 
 
 SMODS.Sound({
+  key = "glowing_apply",
+  path = "stateff_glowing_apply.ogg"
+})
+
+SMODS.Sound({
+  key = "glowing_on",
+  path = "stateff_glowing_on.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "lucky_apply",
+  path = "stateff_lucky_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "unlucky_apply",
+  path = "stateff_unlucky_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "invisible_apply",
+  path = "stateff_invisible_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "furious_apply",
+  path = "stateff_furious_apply.ogg"
+})
+
+
+
+SMODS.Sound({
   key = "guarded_apply",
   path = "stateff_guarded_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "arcane_apply",
+  path = "stateff_arcane_apply.ogg"
+})
+
+
+
+SMODS.Sound({
+  key = "lunatic_apply",
+  path = "stateff_lunatic_apply.ogg"
 })
 
 

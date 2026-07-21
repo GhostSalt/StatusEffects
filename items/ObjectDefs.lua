@@ -39,7 +39,7 @@ function SMODS.calculate_card_areas(_type, context, return_table, args)
     return ret
 end]]
 
-StatusEffects.change_effect_level = function(key, level)
+StatusEffects.change_effect_level = function(key, level, args)
     if not G.GAME then return end
     if not G.GAME.APPLIED_EFFECTS then G.GAME.APPLIED_EFFECTS = {} end
     local effect = G.GAME.APPLIED_EFFECTS[key]
@@ -47,9 +47,9 @@ StatusEffects.change_effect_level = function(key, level)
         if (effect.level or 0) <= -level then return StatusEffects.clear_effect(key) end
         effect.level = (effect.level or 0) + level
         if level > 0 and StatusEffects.ALL_EFFECTS[key].apply_effect then
-            StatusEffects.ALL_EFFECTS[key]:apply_effect(effect, level)
+            StatusEffects.ALL_EFFECTS[key]:apply_effect(effect, level, args)
         elseif level < 0 and StatusEffects.ALL_EFFECTS[key].remove_effect then
-            StatusEffects.ALL_EFFECTS[key]:remove_effect(effect, -level)
+            StatusEffects.ALL_EFFECTS[key]:remove_effect(effect, -level, args)
         end
         stateff_update_box()
     else
@@ -58,26 +58,26 @@ StatusEffects.change_effect_level = function(key, level)
         G.GAME.APPLIED_EFFECTS[key].level = level
         G.GAME.APPLIED_EFFECTS[key]._order = G.GAME.NEXT_EFFECT_ORDER or 1
         G.GAME.NEXT_EFFECT_ORDER = (G.GAME.NEXT_EFFECT_ORDER or 1) + 1
-        if StatusEffects.ALL_EFFECTS[key].apply_effect then StatusEffects.ALL_EFFECTS[key]:apply_effect(G.GAME.APPLIED_EFFECTS[key], level) end
+        if StatusEffects.ALL_EFFECTS[key].apply_effect then StatusEffects.ALL_EFFECTS[key]:apply_effect(G.GAME.APPLIED_EFFECTS[key], level, args) end
         stateff_update_box()
     end
 end
 
-StatusEffects.clear_effect = function(key)
+StatusEffects.clear_effect = function(key, args)
     if not G.GAME or not G.GAME.APPLIED_EFFECTS then return end
     if G.GAME.APPLIED_EFFECTS[key] then
         local level = G.GAME.APPLIED_EFFECTS[key].level
         G.GAME.APPLIED_EFFECTS[key].level = 0
-        if StatusEffects.ALL_EFFECTS[key].remove_effect then StatusEffects.ALL_EFFECTS[key]:remove_effect(G.GAME.APPLIED_EFFECTS[key], level) end
+        if StatusEffects.ALL_EFFECTS[key].remove_effect then StatusEffects.ALL_EFFECTS[key]:remove_effect(G.GAME.APPLIED_EFFECTS[key], level, args) end
         G.GAME.APPLIED_EFFECTS[key] = nil
         stateff_update_box()
     end
 end
 
-StatusEffects.clear_all_effects = function()
+StatusEffects.clear_all_effects = function(args)
     if not G.GAME or not G.GAME.APPLIED_EFFECTS then return end
     for k, v in pairs(G.GAME.APPLIED_EFFECTS) do
-        StatusEffects.clear_effect(k)
+        StatusEffects.clear_effect(k, args)
     end
 end
 
@@ -88,7 +88,7 @@ StatusEffects.get_effect = function(key)
 end
 
 function SMODS.current_mod:calculate(context)
-    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then --Status Effects woz here
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
         if G.STATE == G.STATES.SELECTING_HAND and G.STATE_COMPLETE then
             stop_use()
             G.STATE = G.STATES.NEW_ROUND
@@ -99,8 +99,11 @@ function SMODS.current_mod:calculate(context)
 
 
     local ret = nil
+    local flags = {}
+    for _, v in pairs(StatusEffects.ALL_EFFECTS) do
+        if v.calculate_always then flags[#flags + 1] = v:calculate_always(context) end
+    end
     if G.GAME and G.GAME.APPLIED_EFFECTS then
-        local flags = {}
         for effect, v in pairs(G.GAME.APPLIED_EFFECTS) do
             if StatusEffects.ALL_EFFECTS[effect].calculate then flags[#flags + 1] = StatusEffects.ALL_EFFECTS[effect]:calculate(v, context) end
         end
