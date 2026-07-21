@@ -34,6 +34,28 @@ SMODS.UndiscoveredSprite({
 
 
 
+
+local sell_use_ref = G.UIDEF.use_and_sell_buttons
+function G.UIDEF.use_and_sell_buttons(card)
+    if not (card and card.ability and card.ability.set == "stateff_Potion" and card.area == G.pack_cards and G.pack_cards) then
+        return sell_use_ref(card)
+    end
+
+    return {
+      n = G.UIT.ROOT,
+      config = { padding = 0, colour = G.C.CLEAR },
+      nodes = {
+        {
+          n = G.UIT.R,
+          config = { ref_table = card, r = 0.08, padding = 0.1, align = "bm", w = 0.8 * card.T.w - 0.15, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = "use_card", func = "can_use_consumeable" },
+          nodes = {
+            { n = G.UIT.T, config = { text = localize("b_stateff_drink"), colour = G.C.UI.TEXT_LIGHT, scale = 0.5, shadow = true } }
+          }
+        }
+      }
+    }
+end
+
 stateff_create_generic_potion = function(args)
     if not args then return end
 
@@ -94,7 +116,8 @@ stateff_create_generic_potion = function(args)
                     return true
                 end
             }))
-        end
+        end,
+        in_pool = args.in_pool
     }
 end
 
@@ -247,7 +270,8 @@ stateff_create_generic_potion {
 stateff_create_generic_potion {
     key = "plainmilk",
     pos = { x = 2, y = 2 },
-    clear_all_effects = true
+    clear_all_effects = true,
+    in_pool = function() return false end
 }
 
 stateff_create_generic_potion {

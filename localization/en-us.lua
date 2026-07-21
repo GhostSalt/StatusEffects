@@ -130,7 +130,9 @@ return {
                 name = "Plain Milk",
                 text = {
                     "Clears all",
-                    "{C:attention}status effects{}"
+                    "{C:attention}status effects{}",
+                    "{C:inactive,s:0.8}(Only available in",
+                    "{C:inactive,s:0.8}Remedy Packs){}"
                 }
             },
             c_stateff_miraclenectar = {
@@ -309,6 +311,44 @@ return {
                     "Earn {C:money}$4{}"
                 }
             },
+            
+
+            p_stateff_potion_normal1 = {
+                name = "Remedy Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{} {C:stateff_potion}Potions{} to drink",
+                    "immediately, always",
+                    "contains {C:attention}Plain Milk{}"
+                }
+            },
+            p_stateff_potion_normal2 = {
+                name = "Remedy Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{} {C:stateff_potion}Potions{} to drink",
+                    "immediately, always",
+                    "contains {C:attention}Plain Milk{}"
+                }
+            },
+            p_stateff_potion_jumbo1 = {
+                name = "Jumbo Remedy Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{} {C:stateff_potion}Potions{} to drink",
+                    "immediately, always",
+                    "contains {C:attention}Plain Milk{}"
+                }
+            },
+            p_stateff_potion_mega1 = {
+                name = "Mega Remedy Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{} {C:stateff_potion}Potions{} to drink",
+                    "immediately, always",
+                    "contains {C:attention}Plain Milk{}"
+                }
+            },
 
             undiscovered_stateff_potion = {
                 name = "Not Discovered",
@@ -324,6 +364,9 @@ return {
         dictionary = {
             b_stateff_potion_cards = "Potions",
             k_stateff_potion = "Potion",
+            k_stateff_potion_pack = "Remedy Pack",
+            b_stateff_drink = "DRINK",
+
             ph_stateff_guarded = "Saved by Guarded",
 
             stateff_plural = "s"
