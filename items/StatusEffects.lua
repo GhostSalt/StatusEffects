@@ -6,6 +6,13 @@ SMODS.Atlas {
 }
 
 SMODS.Atlas {
+    key = "StatusEffects_dark",
+    path = "StatusEffectsStatusIconsDark.png",
+    px = 17,
+    py = 17
+}
+
+SMODS.Atlas {
     key = "CardEffects",
     path = "StatusEffectsCardEffects.png",
     px = 71,

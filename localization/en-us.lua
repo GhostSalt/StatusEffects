@@ -142,6 +142,110 @@ return {
                 }
             }
         },
+        Joker = {
+            j_joker = {
+                name = "Joker",
+                text = {
+                    "{C:mult}+#1#{} Mult",
+                    "If {element:1}Mana >= #2#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_banner={
+                name="Banner",
+                text={
+                    "{C:chips}+#1#{} Chips for each",
+                    "remaining {C:attention}discard{}",
+                    "Cost #2# {element:1}Mana:",
+                    "Permanently add {C:chips}+#3#{} Chips",
+                    "to this Joker's bonus"
+                },
+            },
+            j_loyalty_card={
+                name="Loyalty Card",
+                text={
+                    "{X:red,C:white} X#1# {} Mult every",
+                    "{C:attention}#2#{} hands played",
+                    "If {element:1}Mana >= #5#:",
+                    "{C:attention}+#4#{} to hands played",
+                    "{C:inactive}#3#",
+                },
+            },
+            j_8_ball={
+                name="8 Ball",
+                text={
+                    "{C:green}#1# in #2#{} chance for each",
+                    "played {C:attention}8{} to create a",
+                    "{C:tarot}Tarot{} card when scored",
+                    "Cost #3# {element:1}Mana:",
+                    "odds are {C:green}guaranteed{}",
+                    "{C:inactive}(Must have room)"
+                },
+            },
+            j_space ={
+                name="Space Joker",
+                text={
+                    "{C:green}#1# in #2#{} chance to",
+                    "upgrade level of",
+                    "played {C:attention}poker hand{}",
+                    "Cost #3# {element:1}Mana:",
+                    "odds are {C:green}guaranteed{}"
+                }
+            },
+            j_sixth_sense={
+                name="Sixth Sense",
+                text={
+                    "If {C:attention}first hand{} of round is",
+                    "a single {C:attention}6{}, destroy it and",
+                    "create a {C:spectral}Spectral{} card",
+                    "and gain #1# {element:1}Mana",
+                    "{C:inactive}(Must have room)",
+                },
+            },
+            j_madness={
+                name="Madness",
+                text={
+                    "When {C:attention}Small Blind{} or {C:attention}Big Blind{}",
+                    "is selected, gain {X:mult,C:white} X#1# {} Mult",
+                    "and {C:attention}destroy{} a random Joker",
+                    "If {element:1}Mana >= #3#: Don't",
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+            j_seance={
+                name="Séance",
+                text={
+                    "If {C:attention}poker hand{} is a",
+                    "{C:attention}#1#{}, create a",
+                    "random {C:spectral}Spectral{} card",
+                    "and gain #2# {element:1}Mana",
+                    "{C:inactive}(Must have room)"
+                },
+            },
+            j_diet_cola={
+                name="Diet Cola",
+                text={
+                    "Sell this card to",
+                    "create a free",
+                    "{C:attention}#1# and",
+                    "gain #2# {element:1}Mana"
+                },
+            },
+            j_flower_pot={
+                name="Flower Pot",
+                text={
+                    "{X:mult,C:white} X#1# {} Mult if poker",
+                    "hand contains a",
+                    "{C:diamonds}Diamond{} card, {C:clubs}Club{} card,",
+                    "{C:hearts}Heart{} card, and {C:spades}Spade{} card,",
+                    "gain #2# {element:1}Mana otherwise"
+                },
+                unlock={
+                    "Reach Ante",
+                    "level {E:1,C:attention}#1#"
+                },
+            },
+        },
         Other = {
             stateff_stateff_burnt = {
                 name = "Burnt",
@@ -370,6 +474,9 @@ return {
             ph_stateff_guarded = "Saved by Guarded",
 
             stateff_plural = "s"
+        },
+        v_dictionary = {
+            a_mana = "+#1# Mana"
         }
     }
 }

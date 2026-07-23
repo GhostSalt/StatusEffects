@@ -16,7 +16,7 @@ G.C.STATUS_EFFECTS = {
 }
 
 local allFolders = { "none", "items" }
-local allFiles = { ["none"] = {}, ["items"] = { "Sounds", "ObjectDefs", "StatusEffects", "Blinds", "Potions", "Boosters" } }
+local allFiles = { ["none"] = {}, ["items"] = { "Sounds", "ObjectDefs", "StatusEffects", "Blinds", "Potions", "Boosters", "VanillaMana" } }
 
 for i = 1, #allFolders do
   if allFolders[i] == "none" then
