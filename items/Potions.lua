@@ -142,7 +142,7 @@ stateff_create_generic_potion {
     effects = {
         {
             key = "stateff_focused",
-            level = 4
+            level = 3
         },
         {
             key = "stateff_poisoned",
