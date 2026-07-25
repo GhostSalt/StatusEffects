@@ -72,15 +72,14 @@ StatusEffects.change_effect_level = function(key, level, args)
 end
 
 StatusEffects.clear_effect = function(key, args)
-        SMODS.calculate_context({ stateff_effect_changed = key, stateff_level_change = -level, stateff_effect_cleared = key })
     if not G.GAME or not G.GAME.STATEFF_APPLIED_EFFECTS then return end
     if G.GAME.STATEFF_APPLIED_EFFECTS[key] then
         local level = G.GAME.STATEFF_APPLIED_EFFECTS[key].level
         G.GAME.STATEFF_APPLIED_EFFECTS[key].level = 0
         if StatusEffects.ALL_EFFECTS[key].remove_effect then
-            StatusEffects.ALL_EFFECTS[key]:remove_effect(
-                G.GAME.STATEFF_APPLIED_EFFECTS[key], level, args)
+            StatusEffects.ALL_EFFECTS[key]:remove_effect(G.GAME.STATEFF_APPLIED_EFFECTS[key], level, args)
         end
+        SMODS.calculate_context({ stateff_effect_changed = key, stateff_level_change = -level, stateff_effect_cleared = key })
         G.GAME.STATEFF_APPLIED_EFFECTS[key] = nil
         stateff_update_box()
     end
