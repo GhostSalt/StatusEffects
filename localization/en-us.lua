@@ -67,7 +67,7 @@ return {
             c_stateff_dubiousvino = {
                 name = "Dubious Vino",
                 text = {
-                    "{C:green}+#1#{} Focused,",
+                    "{C:green}+#1#{} Confident,",
                     "{C:red}+#2#{} Poisoned"
                 }
             },
@@ -151,70 +151,270 @@ return {
                     "gives double {C:mult}Mult{}"
                 }
             },
-            j_banner={
-                name="Banner",
+            j_jolly = {
+                name="Jolly Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_zany = {
+                name="Zany Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_mad = {
+                name="Mad Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_crazy = {
+                name="Crazy Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_droll = {
+                name="Droll Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:mult}Mult{}"
+                }
+            },
+            j_sly={
+                name="Sly Joker",
                 text={
-                    "{C:chips}+#1#{} Chips for each",
-                    "remaining {C:attention}discard{}",
-                    "Cost #2# {element:1}Mana:",
-                    "Permanently add {C:chips}+#3#{} Chips",
-                    "to this Joker's bonus"
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:chips}Chips{}"
                 },
             },
-            j_loyalty_card={
-                name="Loyalty Card",
+            j_wily={
+                name="Wily Joker",
                 text={
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:chips}Chips{}"
+                },
+            },
+            j_clever={
+                name="Clever Joker",
+                text={
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:chips}Chips{}"
+                },
+            },
+            j_devious={
+                name="Devious Joker",
+                text={
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:chips}Chips{}"
+                },
+            },
+            j_crafty={
+                name="Crafty Joker",
+                text={
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                    "If {element:1}Mana >= #3#:",
+                    "gives double {C:chips}Chips{}"
+                },
+            },
+            j_credit_card={
+                name="Credit Card",
+                text={
+                    "Go up to",
+                    "{C:red}-$#1#{} in debt",
+                    "At the end of the round,",
+                    "earn {C:money}money{} equal to",
+                    "your current {element:1}Mana"
+                },
+            },
+            j_banner = {
+                name = "Banner",
+                text = {
+                    {
+                        "{C:chips}+#1#{} Chips for each",
+                        "remaining {C:attention}discard{}"
+                    },
+                    {
+                        "Cost #2# {element:1}Mana:",
+                        "When hand is played,",
+                        "permanently add {C:chips}+#3#{} Chips",
+                        "to this Joker's bonus"
+                    }
+                }
+            },
+            j_loyalty_card = {
+                name = "Loyalty Card",
+                text = {
                     "{X:red,C:white} X#1# {} Mult every",
                     "{C:attention}#2#{} hands played",
                     "If {element:1}Mana >= #5#:",
                     "{C:attention}+#4#{} to hands played",
-                    "{C:inactive}#3#",
-                },
-            },
-            j_8_ball={
-                name="8 Ball",
-                text={
-                    "{C:green}#1# in #2#{} chance for each",
-                    "played {C:attention}8{} to create a",
-                    "{C:tarot}Tarot{} card when scored",
-                    "Cost #3# {element:1}Mana:",
-                    "odds are {C:green}guaranteed{}",
-                    "{C:inactive}(Must have room)"
-                },
-            },
-            j_space ={
-                name="Space Joker",
-                text={
-                    "{C:green}#1# in #2#{} chance to",
-                    "upgrade level of",
-                    "played {C:attention}poker hand{}",
-                    "Cost #3# {element:1}Mana:",
-                    "odds are {C:green}guaranteed{}"
+                    "{C:inactive}#3#"
                 }
             },
-            j_sixth_sense={
-                name="Sixth Sense",
+            j_8_ball = {
+                name = "8 Ball",
+                text = {
+                    {
+                        "{C:green}#1# in #2#{} chance for each",
+                        "played {C:attention}8{} to create a",
+                        "{C:tarot}Tarot{} card when scored"
+                    },
+                    {
+                        "Cost #3# {element:1}Mana:",
+                        "odds are {C:green}guaranteed{}",
+                        "{C:inactive}(Must have room)"
+                    }
+                }
+            },
+            j_gros_michel={
+                name="Gros Michel",
                 text={
+                    "{C:mult}+#1#{} Mult",
+                    "{C:green}#2# in #3#{} chance this",
+                    "card is destroyed",
+                    "at end of round,",
+                    "gain #4# {element:1}{C:stateff_odds}Lucky{}",
+                    "when it does"
+                },
+            },
+            j_space = {
+                name = "Space Joker",
+                text = {
+                    {
+                        "{C:green}#1# in #2#{} chance to",
+                        "upgrade level of",
+                        "played {C:attention}poker hand{}"
+                    },
+                    {
+                        "Cost #3# {element:1}Mana:",
+                        "odds are {C:green}guaranteed{}"
+                    }
+                }
+            },
+            j_burglar = {
+                name = "Burglar",
+                text = {
+                    {
+                        "When {C:attention}Blind{} is selected,",
+                        "gain {C:blue}+#1#{} Hands and",
+                        "{C:attention}lose all discards{}"
+                    },
+                    {
+                        "Cost #3# {element:1}Mana:",
+                        "gain {C:blue}+#2#{} more Hands"
+                    }
+                }
+            },
+            j_ice_cream={
+                name="Ice Cream",
+                text={
+                    "{C:chips}+#1#{} Chips",
+                    "{C:chips}-#2#{} Chips for",
+                    "every hand played,",
+                    "gain #3# {element:1}{C:stateff_blue}Swift{}",
+                    "when consumed"
+                },
+            },
+            j_dna = {
+                name = "DNA",
+                text = {
+                    {
+                        "If {C:attention}first hand{} of round",
+                        "has only {C:attention}1{} card, add a",
+                        "permanent copy to deck",
+                        "and draw it to {C:attention}hand"
+                    },
+                    {
+                        "Cost #1# {element:1}Mana:",
+                        "copy it {C:attention}twice{}"
+                    }
+                }
+            },
+            j_sixth_sense = {
+                name = "Sixth Sense",
+                text = {
                     "If {C:attention}first hand{} of round is",
                     "a single {C:attention}6{}, destroy it and",
                     "create a {C:spectral}Spectral{} card",
                     "and gain #1# {element:1}Mana",
                     "{C:inactive}(Must have room)",
+                }
+            },
+            j_todo_list = {
+                name = "To Do List",
+                text = {
+                    {
+                        "Earn {C:money}$#1#{} if {C:attention}poker hand{}",
+                        "is a {C:attention}#2#{},",
+                        "poker hand changes",
+                        "at end of round",
+                    },
+                    {
+                        "Cost #3# {element:1}Mana:",
+                        "poker hand changes to",
+                        "{C:attention}High Card{} at end of round"
+                    }
+                }
+            },
+            j_cavendish={
+                name="Cavendish",
+                text={
+                    "{X:mult,C:white} X#1# {} Mult",
+                    "{C:green}#2# in #3#{} chance this",
+                    "card is destroyed",
+                    "at end of round,",
+                    "gain #4# {element:1}{C:stateff_odds}Unlucky{}",
+                    "when it does"
                 },
             },
-            j_madness={
-                name="Madness",
-                text={
+            j_madness = {
+                name = "Madness",
+                text = {
                     "When {C:attention}Small Blind{} or {C:attention}Big Blind{}",
                     "is selected, gain {X:mult,C:white} X#1# {} Mult",
                     "and {C:attention}destroy{} a random Joker",
                     "If {element:1}Mana >= #3#: Don't",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
-                },
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+                }
             },
-            j_seance={
-                name="Séance",
-                text={
+            j_seance = {
+                name = "Séance",
+                text = {
                     "If {C:attention}poker hand{} is a",
                     "{C:attention}#1#{}, create a",
                     "random {C:spectral}Spectral{} card",
@@ -222,28 +422,46 @@ return {
                     "{C:inactive}(Must have room)"
                 },
             },
-            j_diet_cola={
-                name="Diet Cola",
-                text={
+            j_golden = {
+                name = "Golden Joker",
+                text = {
+                    "Earn {C:money}$#1#{} and",
+                    "gain #2# {element:1}Mana at",
+                    "end of round",
+                },
+            },
+            j_diet_cola = {
+                name = "Diet Cola",
+                text = {
                     "Sell this card to",
                     "create a free",
                     "{C:attention}#1# and",
                     "gain #2# {element:1}Mana"
+                }
+            },
+            j_selzer={
+                name="Seltzer",
+                text={
+                    "Retrigger all",
+                    "cards played for",
+                    "the next {C:attention}#1#{} hands,",
+                    "gain #2# {element:1}{C:stateff_red}Confident{}",
+                    "when consumed"
                 },
             },
-            j_flower_pot={
-                name="Flower Pot",
-                text={
+            j_flower_pot = {
+                name = "Flower Pot",
+                text = {
                     "{X:mult,C:white} X#1# {} Mult if poker",
                     "hand contains a",
                     "{C:diamonds}Diamond{} card, {C:clubs}Club{} card,",
                     "{C:hearts}Heart{} card, and {C:spades}Spade{} card,",
                     "gain #2# {element:1}Mana otherwise"
                 },
-                unlock={
+                unlock = {
                     "Reach Ante",
                     "level {E:1,C:attention}#1#"
-                },
+                }
             },
         },
         Other = {
@@ -309,8 +527,8 @@ return {
                     "{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}1 in #2#{C:inactive}){}"
                 }
             },
-            stateff_stateff_focused = {
-                name = "Focused",
+            stateff_stateff_confident = {
+                name = "Confident",
                 text = {
                     "{C:attention}+#1#{} hand size"
                 }
@@ -415,7 +633,7 @@ return {
                     "Earn {C:money}$4{}"
                 }
             },
-            
+
 
             p_stateff_potion_normal1 = {
                 name = "Remedy Pack",

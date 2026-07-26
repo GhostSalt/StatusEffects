@@ -136,7 +136,7 @@ SMODS.DrawStep {
 StatusEffects.define_effect {
     key = "burnt",
     pos = { x = 0, y = 0 },
-    colour = HEX("FD5F55"),
+    colour = G.C.STATUS_EFFECTS.Red,
     config = {},
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
@@ -193,7 +193,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "frozen",
     pos = { x = 1, y = 0 },
-    colour = HEX("41B7FF"),
+    colour = G.C.STATUS_EFFECTS.Blue,
     config = {},
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
@@ -317,7 +317,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "lucky",
     pos = { x = 3, y = 1 },
-    colour = HEX("D9DD61"),
+    colour = G.C.STATUS_EFFECTS.Odds,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 1 }
@@ -335,7 +335,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "unlucky",
     pos = { x = 2, y = 2 },
-    colour = HEX("D9DD61"),
+    colour = G.C.STATUS_EFFECTS.Odds,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 3 }
@@ -351,15 +351,15 @@ StatusEffects.define_effect {
 }
 
 StatusEffects.define_effect {
-    key = "focused",
+    key = "confident",
     pos = { x = 0, y = 2 },
-    colour = HEX("FD5F55"),
+    colour = G.C.STATUS_EFFECTS.Red,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
     apply_effect = function(self, config, added, args)
-        if not (args and args.silent) then play_sound("stateff_focused_apply", 1, 0.4) end
+        if not (args and args.silent) then play_sound("stateff_confident_apply", 1, 0.4) end
         G.hand:change_size(added)
     end,
     remove_effect = function(self, config, removal, args)
@@ -448,7 +448,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "swift",
     pos = { x = 1, y = 2 },
-    colour = HEX("41B7FF"),
+    colour = G.C.STATUS_EFFECTS.Blue,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
@@ -467,7 +467,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "furious",
     pos = { x = 2, y = 3 },
-    colour = HEX("FD5F55"),
+    colour = G.C.STATUS_EFFECTS.Red,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
@@ -627,7 +627,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "lunatic",
     pos = { x = 3, y = 4 },
-    colour = HEX("41B7FF"),
+    colour = G.C.STATUS_EFFECTS.Blue,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }

@@ -73,8 +73,8 @@ SMODS.Sound({
 
 
 SMODS.Sound({
-  key = "focused_apply",
-  path = "stateff_focused_apply.ogg"
+  key = "confident_apply",
+  path = "stateff_confident_apply.ogg"
 })
 
 
@@ -185,4 +185,8 @@ SMODS.Sound({
 SMODS.Sound({
   key = "drink_potion",
   path = "stateff_drink_potion.ogg"
+})
+SMODS.Sound({
+  key = "eat",
+  path = "stateff_eat.ogg"
 })

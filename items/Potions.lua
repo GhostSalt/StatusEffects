@@ -141,12 +141,12 @@ stateff_create_generic_potion {
     pos = { x = 2, y = 0 },
     effects = {
         {
-            key = "stateff_focused",
+            key = "stateff_confident",
             level = 3
         },
         {
             key = "stateff_poisoned",
-            level = 4
+            level = 5
         }
     }
 }
