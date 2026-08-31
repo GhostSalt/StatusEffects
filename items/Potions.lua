@@ -146,7 +146,7 @@ stateff_create_generic_potion {
         },
         {
             key = "stateff_poisoned",
-            level = 5
+            level = 4
         }
     }
 }

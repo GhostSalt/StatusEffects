@@ -139,6 +139,7 @@ StatusEffects.define_effect {
     colour = G.C.STATUS_EFFECTS.Red,
     config = {},
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         info_queue[#info_queue + 1] = { key = "stateff_burnt_info", set = "Other" }
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
@@ -196,6 +197,7 @@ StatusEffects.define_effect {
     colour = G.C.STATUS_EFFECTS.Blue,
     config = {},
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -222,6 +224,7 @@ StatusEffects.define_effect {
     colour = HEX("FDA200"),
     config = { money_per_level = 1 },
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level * config.money_per_level }
     end,
@@ -246,6 +249,7 @@ StatusEffects.define_effect {
     pos = { x = 0, y = 1 },
     colour = HEX("FFFFFF"),
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
@@ -269,6 +273,7 @@ StatusEffects.define_effect {
     pos = { x = 1, y = 1 },
     colour = HEX("FFFFFF"),
     config = { num = 1, denom = 3 },
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         local num, denom = SMODS.get_probability_vars(self, config.num, config.denom, "stateff_cursed")
         return { num, denom }
@@ -278,10 +283,12 @@ StatusEffects.define_effect {
     end,
     calculate = function(self, config, context)
         if context.debuff_hand and not context.check and G.GAME.current_round.hands_left > 0 and SMODS.pseudorandom_probability(self, "stateff_cursed", config.num, config.denom) then
+            StatusEffects.change_effect_buffer("stateff_cursed", -1)
             G.E_MANAGER:add_event(Event({
                 func = function()
                     play_sound("stateff_cursed_on", 1, 0.35)
                     StatusEffects.change_effect_level("stateff_cursed", -1)
+                        StatusEffects.clear_effect_buffer("stateff_cursed")
                     return true
                 end
             }))
@@ -295,6 +302,7 @@ StatusEffects.define_effect {
     pos = { x = 2, y = 1 },
     colour = HEX("8A71E1"),
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
@@ -319,6 +327,7 @@ StatusEffects.define_effect {
     pos = { x = 3, y = 1 },
     colour = G.C.STATUS_EFFECTS.Odds,
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 1 }
     end,
@@ -337,6 +346,7 @@ StatusEffects.define_effect {
     pos = { x = 2, y = 2 },
     colour = G.C.STATUS_EFFECTS.Odds,
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level + 3 }
     end,
@@ -355,6 +365,7 @@ StatusEffects.define_effect {
     pos = { x = 0, y = 2 },
     colour = G.C.STATUS_EFFECTS.Red,
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
@@ -371,9 +382,21 @@ StatusEffects.define_effect {
     key = "clairvoyant",
     pos = { x = 3, y = 2 },
     colour = HEX("8A71E1"),
-    decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
+    end,
+    calculate = function(self, config, context)
+        if context.ending_shop then
+            StatusEffects.change_effect_buffer("stateff_clairvoyant", -1)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    StatusEffects.change_effect_level("stateff_clairvoyant", -1)
+                    StatusEffects.clear_effect_buffer("stateff_clairvoyant")
+                    return true
+                end
+            }))
+        end
     end,
     apply_effect = function(self, config, added, args)
         if not (args and args.silent) then play_sound("stateff_clairvoyant_apply", 1, 0.4) end
@@ -390,6 +413,7 @@ StatusEffects.define_effect {
     colour = HEX("927E5C"),
     config = {},
     decrease_at_eor = 1,
+    negative_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -450,6 +474,7 @@ StatusEffects.define_effect {
     pos = { x = 1, y = 2 },
     colour = G.C.STATUS_EFFECTS.Blue,
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -469,6 +494,7 @@ StatusEffects.define_effect {
     pos = { x = 2, y = 3 },
     colour = G.C.STATUS_EFFECTS.Red,
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -487,6 +513,7 @@ StatusEffects.define_effect {
     pos = { x = 3, y = 3 },
     colour = HEX("927E5C"),
     decrease_at_eor = 1,
+    positive_effect = true,
     apply_effect = function(self, config, added, args)
         if not (args and args.silent) then play_sound("stateff_invisible_apply", 1, 0.6) end
     end,
@@ -500,6 +527,7 @@ StatusEffects.define_effect {
     pos = { x = 0, y = 4 },
     colour = HEX("FDA200"),
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         info_queue[#info_queue + 1] = { key = "stateff_shining_info", set = "Other" }
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
@@ -560,6 +588,7 @@ StatusEffects.define_effect {
     pos = { x = 1, y = 4 },
     colour = HEX("927E5C"),
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -592,6 +621,7 @@ StatusEffects.define_effect {
     key = "arcane",
     pos = { x = 2, y = 4 },
     colour = HEX("8A71E1"),
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -602,11 +632,13 @@ StatusEffects.define_effect {
         if context.after then
             if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                StatusEffects.change_effect_buffer("stateff_arcane", -1)
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         SMODS.add_card { set = "Tarot", key_append = "stateff_arcane" }
                         G.GAME.consumeable_buffer = 0
                         StatusEffects.change_effect_level("stateff_arcane", -1)
+                        StatusEffects.clear_effect_buffer("stateff_arcane")
                         return true
                     end
                 }))
@@ -627,6 +659,7 @@ StatusEffects.define_effect {
 StatusEffects.define_effect {
     key = "lunatic",
     pos = { x = 3, y = 4 },
+    negative_effect = true,
     colour = G.C.STATUS_EFFECTS.Blue,
     decrease_at_eor = 1,
     loc_vars = function(self, info_queue, config)
@@ -649,6 +682,7 @@ StatusEffects.define_effect {
     key = "mana",
     pos = { x = 0, y = 3 },
     colour = HEX("FFFFFF"),
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level }
     end,
@@ -662,6 +696,7 @@ StatusEffects.define_effect {
     pos = { x = 1, y = 3 },
     colour = HEX("FDA200"),
     decrease_at_eor = 1,
+    positive_effect = true,
     loc_vars = function(self, info_queue, config)
         return { config.level, config.level == 1 and "" or localize("stateff_plural") }
     end,
@@ -671,5 +706,8 @@ StatusEffects.define_effect {
     end,
     remove_effect = function(self, config, removal, args)
         G.jokers.config.card_limit = G.jokers.config.card_limit - removal
+    end,
+    in_pool = function()
+        return false    -- Should not appear when positive effects are polled.
     end
 }

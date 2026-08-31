@@ -15,6 +15,8 @@ G.C.STATUS_EFFECTS = {
   PotionAlt = HEX("66777a"),
   Red = HEX("fd5f55"),
   Blue = HEX("41b7ff"),
+  Purple = HEX("8a71e1"),
+  Brown = HEX("927e5c"),
   Odds = HEX("d9dd61")
 }
 
@@ -29,6 +31,8 @@ function loc_colour(_c, default)
     local new_colors = {
       stateff_red = G.C.STATUS_EFFECTS.Red,
       stateff_blue = G.C.STATUS_EFFECTS.Blue,
+      stateff_purple = G.C.STATUS_EFFECTS.Purple,
+      stateff_brown = G.C.STATUS_EFFECTS.Brown,
       stateff_odds = G.C.STATUS_EFFECTS.Odds
     }
 
@@ -41,7 +45,7 @@ function loc_colour(_c, default)
 end
 
 local allFolders = { "none", "items" }
-local allFiles = { ["none"] = {}, ["items"] = { "Sounds", "ObjectDefs", "StatusEffects", "Blinds", "Potions", "Boosters", "VanillaMana" } }
+local allFiles = { ["none"] = {}, ["items"] = { "Sounds", "ObjectDefs", "StatusEffects", "Decks", "Blinds", "Potions", "Boosters", "VanillaMana" } }
 
 for i = 1, #allFolders do
   if allFolders[i] == "none" then
