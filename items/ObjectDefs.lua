@@ -116,7 +116,9 @@ StatusEffects.has_had_effect = function(key)
 end
 
 function SMODS.current_mod:calculate(context)
-    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
+    if G.hand and G.hand.cards and #G.hand.cards < 1
+    and G.deck and G.deck.cards and #G.deck.cards < 1
+    and G.play and G.play.cards and #G.play.cards < 1 then
         if G.STATE == G.STATES.SELECTING_HAND and G.STATE_COMPLETE then
             stop_use()
             G.STATE = G.STATES.NEW_ROUND

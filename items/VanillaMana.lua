@@ -828,7 +828,7 @@ SMODS.Joker:take_ownership("cavendish", {
 }, true)
 
 SMODS.Joker:take_ownership("madness", {
-    config = { extra = { xmult_gain = 0.5, xmult = 1, mana = 1 } },
+    config = { extra = { xmult_gain = 0.5, xmult = 1, mana = 1, sad_xmult_gain = 0.3 } },
     loc_vars = function(self, info_queue, card)
         local key = self.key .. "_mana"
         return {
@@ -837,6 +837,7 @@ SMODS.Joker:take_ownership("madness", {
                 card.ability.extra.xmult_gain,
                 card.ability.extra.xmult,
                 card.ability.extra.mana,
+                card.ability.extra.sad_xmult_gain,
                 elements = { StatusEffects.create_hoverable_icon { key = "stateff_mana", level = card.ability.extra.mana, dark = true } }
             }
         }
@@ -863,10 +864,10 @@ SMODS.Joker:take_ownership("madness", {
                         end
                     }))
                 end
-                return { message = localize { type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } } }
             else
-                return { message = "...", colour = G.C.BLUE }
+                card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.sad_xmult_gain
             end
+            return { message = localize { type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } } }
         end
 
         if context.joker_main then return { xmult = card.ability.extra.xmult } end
@@ -1045,6 +1046,56 @@ SMODS.Joker:take_ownership("diet_cola", {
     end
 }, true)
 
+SMODS.Joker:take_ownership("popcorn", {
+    config = { extra = { mult_loss = 4, mult = 20, mana = 1 } },
+    loc_vars = function(self, info_queue, card)
+        local key = self.key .. "_mana"
+        return {
+            key = key,
+            vars = {
+                card.ability.extra.mult,
+                card.ability.extra.mult_loss,
+                card.ability.extra.mana,
+                elements = { StatusEffects.create_hoverable_icon { key = "stateff_mana", level = card.ability.extra.mana, dark = true } }
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if StatusEffects.get_effect("stateff_mana") >= card.ability.extra.mana then
+                StatusEffects.change_effect_buffer("stateff_mana", -card.ability.extra.mana)
+                card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_loss
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        StatusEffects.change_effect_level("stateff_mana", -card.ability.extra.mana)
+                        StatusEffects.clear_effect_buffer("stateff_mana")
+                        return true
+                    end
+                }))
+                return {
+                    message = localize { type = "variable", key = "a_mult", vars = { card.ability.extra.mult_loss } },
+                    colour = G.C.MULT
+                }
+            else
+                if card.ability.extra.mult - card.ability.extra.mult_loss <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    return {
+                        message = localize("k_eaten_ex"),
+                        colour = G.C.RED
+                    }
+                else
+                    card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_loss
+                    return {
+                        message = localize { type = "variable", key = "a_mult_minus", vars = { card.ability.extra.mult_loss } },
+                        colour = G.C.MULT
+                    }
+                end
+            end
+        end
+        if context.joker_main then return { mult = card.ability.extra.mult } end
+    end
+}, true)
+
 SMODS.Joker:take_ownership("ramen", {
     config = { extra = { Xmult_loss = 0.01, Xmult = 2, furious = 3 } },
     loc_vars = function(self, info_queue, card)
@@ -1216,6 +1267,51 @@ SMODS.Joker:take_ownership("flower_pot", {
                     end
                 }))
                 return { message = localize { type = "variable", key = "a_mana", vars = { card.ability.extra.mana } } }
+            end
+        end
+    end
+}, true)
+
+SMODS.Joker:take_ownership("cartomancer", {
+    config = { extra = { mana = 2 } },
+    loc_vars = function(self, info_queue, card)
+        local key = self.key .. "_mana"
+        info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+        return {
+            key = key,
+            vars = { card.ability.extra.mana, elements = { StatusEffects.create_hoverable_icon { key = "stateff_mana", level = card.ability.extra.mana, dark = true } } }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            local do_mana = StatusEffects.get_effect("stateff_mana") >= card.ability.extra.mana
+            if do_mana or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                if do_mana then
+                    StatusEffects.change_effect_buffer("stateff_mana", -card.ability.extra.mana)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            StatusEffects.change_effect_level("stateff_mana", -card.ability.extra.mana)
+                            StatusEffects.clear_effect_buffer("stateff_mana")
+                            return true
+                        end
+                    }))
+                else
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                end
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                SMODS.add_card { set = "Tarot", key_append = "cartomancer", edition = do_mana and "e_negative" }
+                                G.GAME.consumeable_buffer = 0
+                                return true
+                            end
+                        }))
+                        SMODS.calculate_effect({ message = localize("k_plus_tarot"), colour = G.C.PURPLE }, context.blueprint_card or card)
+                        return true
+                    end
+                }))
+                return nil, true -- This is for Joker retrigger purposes
             end
         end
     end

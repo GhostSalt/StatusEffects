@@ -522,11 +522,17 @@ return {
             j_madness_mana = {
                 name = "Madness",
                 text = {
-                    "When {C:attention}Small Blind{} or {C:attention}Big Blind{}",
-                    "is selected, gain {X:mult,C:white} X#1# {} Mult",
-                    "and {C:attention}destroy{} a random Joker",
-                    "If {element:1}Mana >= #3#: Don't",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+                    {
+                        "When {C:attention}Small Blind{} or {C:attention}Big Blind{}",
+                        "is selected, gain {X:mult,C:white} X#1# {} Mult",
+                        "and {C:attention}destroy{} a random Joker",
+                        "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+                    },
+                    {
+                        "If {element:1}Mana >= #3#:",
+                        "{C:red}Doesn't{} {C:attention}destroy{} Jokers, but",
+                        "only gains {X:mult,C:white}X#4#{} Mult"
+                    }
                 }
             },
             j_seance_mana = {
@@ -572,6 +578,21 @@ return {
                     "gain #2# {element:1}Mana"
                 }
             },
+            j_popcorn_mana = {
+                name = "Popcorn",
+                text = {
+                    {
+                        "{C:mult}+#1#{} Mult",
+                        "{C:mult}-#2#{} Mult per",
+                        "round played"
+                    },
+                    {
+                        "Cost #3# {element:1}Mana:",
+                        "gains {C:mult}+#2#{} Mult per",
+                        "round played instead"
+                    }
+                }
+            },
             j_ramen_mana = {
                 name = "Ramen",
                 text = {
@@ -605,6 +626,25 @@ return {
                     "Reach Ante",
                     "level {E:1,C:attention}#1#"
                 }
+            },
+            j_cartomancer_mana = {
+                name = "Cartomancer",
+                text = {
+                    {
+                        "Create a {C:tarot}Tarot{} card",
+                        "when {C:attention}Blind{} is selected",
+                        "{C:inactive}(Must have room)",
+                    },
+                    {
+                        "Cost #1# {element:1}Mana:",
+                        "creates a {C:dark_edition}Negative{}",
+                        "{C:tarot}Tarot{} card"
+                    }
+                },
+                unlock = {
+                    "Discover every",
+                    "{E:1,C:tarot}Tarot{} card",
+                },
             },
             j_caino_mana = {
                 name = "Canio",

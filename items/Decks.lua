@@ -9,7 +9,7 @@ SMODS.Back {
     key = "oracle",
     atlas = "Decks",
     pos = { x = 0, y = 0 },
-    config = { extra = { mana = 20, clairvoyant = 2, arcane = 2 } },
+    config = { extra = { mana = 10, clairvoyant = 2, arcane = 2 } },
     loc_vars = function(self, info_queue, back)
         return {
             vars = {
