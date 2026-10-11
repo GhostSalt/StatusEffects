@@ -9,7 +9,7 @@
     "dependencies": [
         "Steamodded (>=26.829.0)"
     ],
-    "version": "1.2.0~ALPHA",
+    "version": "1.0.0",
     "priority": 2,
     "no_marquee": true,
     "icon_path": "StatusEffectsIcon.png"
