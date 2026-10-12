@@ -1,0 +1,1 @@
+Adds various status effects to the game, which can be obtained via Potions, Boss Blinds and Jokers!

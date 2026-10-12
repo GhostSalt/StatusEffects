@@ -1,0 +1,9 @@
+{
+    "name": "StatusEffects",
+    "description": "Adds status effects to Balatro! You are now susceptible to poison! Yay!",
+    "version_number": "1.0.0",
+    "dependencies": [
+        "Steamodded-Steamodded-26.829.0"
+    ],
+    "website_url": "https://github.com/GhostSalt/StatusEffects"
+}
