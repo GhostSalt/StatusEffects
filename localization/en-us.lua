@@ -574,7 +574,7 @@ return {
                 text = {
                     "Sell this card to",
                     "create a free",
-                    "{C:attention}#1# and",
+                    "{C:attention}#1#{} and",
                     "gain #2# {element:1}Mana"
                 }
             },
