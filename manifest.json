@@ -1,7 +1,7 @@
 {
     "name": "StatusEffects",
     "description": "Adds status effects to Balatro! You are now susceptible to poison! Yay!",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "dependencies": [
         "Steamodded-Steamodded-26.829.0"
     ],
