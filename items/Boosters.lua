@@ -12,7 +12,7 @@ SMODS.Booster {
   pos = { x = 0, y = 0 },
   config = { extra = 3, choose = 1 },
   cost = 4,
-  weight = 0.8,
+  weight = 2,
   create_card = function(self, card, i)
     return stateff_create_for_potion_pack("stateff_potion_normal1", i, card.ability.extra)
   end,
@@ -34,7 +34,7 @@ SMODS.Booster {
   pos = { x = 1, y = 0 },
   config = { extra = 3, choose = 1 },
   cost = 4,
-  weight = 0.8,
+  weight = 2,
   create_card = function(self, card, i)
     return stateff_create_for_potion_pack("stateff_potion_normal2", i, card.ability.extra)
   end,
@@ -56,7 +56,7 @@ SMODS.Booster {
   pos = { x = 2, y = 0 },
   config = { extra = 5, choose = 1 },
   cost = 6,
-  weight = 0.4,
+  weight = 1,
   create_card = function(self, card, i)
     return stateff_create_for_potion_pack("stateff_potion_jumbo1", i, card.ability.extra)
   end,
@@ -78,7 +78,7 @@ SMODS.Booster {
   pos = { x = 3, y = 0 },
   config = { extra = 5, choose = 2 },
   cost = 8,
-  weight = 0.2,
+  weight = 0.5,
   create_card = function(self, card, i)
     return stateff_create_for_potion_pack("stateff_potion_mega1", i, card.ability.extra)
   end,
